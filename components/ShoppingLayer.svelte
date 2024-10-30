@@ -1,0 +1,83 @@
+<script>
+  import {
+    VectorTileSource,
+    FillLayer,
+    CircleLayer,
+    LineLayer,
+  } from "svelte-maplibre";
+
+  export let TILE_BUCKET;
+
+  let polygon = `pmtiles://${TILE_BUCKET}/shopping_polygon.pmtiles`;
+  let point = `pmtiles://${TILE_BUCKET}/shopping_point.pmtiles`;
+  let hovered = null;
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  function handleMouseMove(event) {
+    mouseX = event.clientX + 10;
+    mouseY = event.clientY + 10;
+  }
+
+  window.addEventListener("mousemove", handleMouseMove);
+
+  let subpurpose_colour_lookup = [
+    "green",
+  ];
+</script>
+
+<VectorTileSource url={polygon}>
+  <FillLayer
+    sourceLayer={"shopping"}
+    type="fill"
+    paint={{
+      "fill-color": "#c22dd6",
+      "fill-opacity": 0.5,
+    }}
+    bind:hovered
+  />
+  <LineLayer
+    sourceLayer={"shopping"}
+    type="line"
+    paint={{
+      "line-color": "black",
+      "line-width": 2,
+    }}
+  />
+</VectorTileSource>
+
+<VectorTileSource url={point}>
+  <CircleLayer
+    sourceLayer={"shopping_point"}
+    type="circle"
+    paint={{
+      "circle-radius": 10,
+      "circle-color": "#c22dd6",
+      "circle-opacity": 0.5,
+      "circle-stroke-width": 2,
+      "circle-stroke-color": "black",
+    }}
+    bind:hovered
+  />
+</VectorTileSource>
+
+<div
+  class="tooltip"
+  style="top: {mouseY}px; left: {mouseX}px;"
+  hidden={!hovered}
+>
+  Name: {hovered?.properties?.name}
+  <br />
+  Shop: {hovered?.properties?.shop_type}
+</div>
+
+<style>
+  .tooltip {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+    pointer-events: none;
+  }
+</style>
