@@ -12,6 +12,7 @@
       "Water",
       "Islands",
       "Streets",
+      "Yearly",
     ];
   }
 </script>

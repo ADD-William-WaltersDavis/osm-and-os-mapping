@@ -10,6 +10,7 @@
   import Water from "./components/Water.svelte";
   import OsmWalkIslands from "./components/OSMWalkIslands.svelte";
   import StreetsOsMvsOs from "./components/StreetsOSMvsOS.svelte";
+  import YearlyOsm from "./components/YearlyOSM.svelte";
 
   // set bucket name here
   const TILE_BUCKET =
@@ -46,6 +47,8 @@
     <OsmWalkIslands />
   {:else if purpose === "Streets"}
     <StreetsOsMvsOs />
+  {:else if purpose === "Yearly"}
+    <YearlyOsm />
   {:else}
     <HealthLayer {TILE_BUCKET} />
     <EducationLayer {TILE_BUCKET} />
