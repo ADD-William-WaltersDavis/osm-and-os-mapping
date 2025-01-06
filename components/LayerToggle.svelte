@@ -1,5 +1,5 @@
 <script>
-  export let purpose = "Health";
+  export let purpose = "EducationTests";
 
   function purposes() {
     return [
@@ -13,6 +13,7 @@
       "Islands",
       "Streets",
       "Yearly",
+      "EducationTests",
     ];
   }
 </script>

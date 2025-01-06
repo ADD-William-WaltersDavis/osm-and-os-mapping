@@ -5,7 +5,7 @@
     hoverStateFilter,
   } from "svelte-maplibre";
 
-  let url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/yearly-osm/england/20`;
+  let url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/yearly-osm/gb/20`;
 
   let layerConfigs = [
     { name: "cycling_14", suffix: "14-cycling.pmtiles", colour: "#b24aff" },
