@@ -47,7 +47,7 @@
     }
     return layers_;
   }
-  
+
   let comparisonA = "walking_19";
   let comparisonB = "walking_24";
 
@@ -64,7 +64,6 @@
       }
     }
   }
-
 </script>
 
 {#each Object.keys(layers) as layer}
@@ -74,10 +73,9 @@
         sourceLayer={"year"}
         type="line"
         paint={{
-            "line-width": hoverStateFilter(3, 4),
-            "line-opacity": hoverStateFilter(0.5, 1),
-            "line-color": layers[layer].colour,
-            
+          "line-width": hoverStateFilter(3, 4),
+          "line-opacity": hoverStateFilter(0.5, 1),
+          "line-color": layers[layer].colour,
         }}
         manageHoverState
       />
@@ -87,24 +85,28 @@
 
 <div class="whitebox">
   Compare A to B:
-  <br/>
-  <br/>
+  <br />
+  <br />
   A:
   <select class="govuk-select" bind:value={comparisonA}>
     {#each year_layers() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
-  <div style="display: inline-block; width: 50px; height: 6px; background-color: blue; margin-left: 5px; margin-bottom: 4px;"></div>
-  <br/>
-  <br/>
+  <div
+    style="display: inline-block; width: 50px; height: 6px; background-color: blue; margin-left: 5px; margin-bottom: 4px;"
+  />
+  <br />
+  <br />
   B:
   <select class="govuk-select" bind:value={comparisonB}>
     {#each year_layers() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
-  <div style="display: inline-block; width: 50px; height: 6px; background-color: red; margin-left: 5px; margin-bottom: 4px;"></div>
+  <div
+    style="display: inline-block; width: 50px; height: 6px; background-color: red; margin-left: 5px; margin-bottom: 4px;"
+  />
 </div>
 
 <style>
@@ -121,5 +123,3 @@
     padding-bottom: 10px;
   }
 </style>
-
-

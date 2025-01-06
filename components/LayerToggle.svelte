@@ -18,7 +18,6 @@
   }
 </script>
 
-
 <div class="govuk-form-group" style="display: flex; margin-bottom: 20px">
   <div
     class="govuk-label"

@@ -22,9 +22,7 @@
 
   window.addEventListener("mousemove", handleMouseMove);
 
-  let subpurpose_colour_lookup = [
-    "green",
-  ];
+  let subpurpose_colour_lookup = ["green"];
 </script>
 
 <VectorTileSource url={polygon}>

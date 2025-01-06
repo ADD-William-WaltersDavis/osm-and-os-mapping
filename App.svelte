@@ -37,9 +37,9 @@
   {:else if purpose === "Entertainment"}
     <EntertainmentLayer {TILE_BUCKET} />
   {:else if purpose === "Shopping"}
-  <ShoppingLayer {TILE_BUCKET} />
-  <SustenanceLayer {TILE_BUCKET} />
-  <ShoppingAbcore />
+    <ShoppingLayer {TILE_BUCKET} />
+    <SustenanceLayer {TILE_BUCKET} />
+    <ShoppingAbcore />
   {:else if purpose === "Sustenance"}
     <SustenanceLayer {TILE_BUCKET} />
   {:else if purpose === "Water"}

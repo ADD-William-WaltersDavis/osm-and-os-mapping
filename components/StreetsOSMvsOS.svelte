@@ -27,7 +27,6 @@
   }
 
   window.addEventListener("mousemove", handleMouseMove);
-
 </script>
 
 <!-- <VectorTileSource url={osm_file}>
@@ -49,9 +48,9 @@
     sourceLayer={"os_roadspeeds_restricted_removed"}
     type="line"
     paint={{
-        "line-width": hoverStateFilter(3, 4),
-        "line-opacity": hoverStateFilter(0.5, 1),
-        "line-color": "green",
+      "line-width": hoverStateFilter(3, 4),
+      "line-opacity": hoverStateFilter(0.5, 1),
+      "line-color": "green",
     }}
     bind:hovered
     manageHoverState
@@ -63,9 +62,9 @@
     sourceLayer={"rsar"}
     type="line"
     paint={{
-        "line-width": hoverStateFilter(3, 4),
-        "line-opacity": hoverStateFilter(0.5, 1),
-        "line-color": "cyan",
+      "line-width": hoverStateFilter(3, 4),
+      "line-opacity": hoverStateFilter(0.5, 1),
+      "line-color": "cyan",
     }}
     bind:hovered
     manageHoverState
@@ -77,9 +76,9 @@
     sourceLayer={"rlar"}
     type="line"
     paint={{
-        "line-width": hoverStateFilter(3, 4),
-        "line-opacity": hoverStateFilter(0.5, 1),
-        "line-color": "purple",
+      "line-width": hoverStateFilter(3, 4),
+      "line-opacity": hoverStateFilter(0.5, 1),
+      "line-color": "purple",
     }}
     bind:hovered
     manageHoverState

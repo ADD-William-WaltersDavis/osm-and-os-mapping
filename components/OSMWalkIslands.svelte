@@ -1,13 +1,8 @@
 <script>
-  import {
-    VectorTileSource,
-    CircleLayer,
-  } from "svelte-maplibre";
-
+  import { VectorTileSource, CircleLayer } from "svelte-maplibre";
 
   let point = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/water_bodies/osm_walk_islands.pmtiles`;
   let ospoint = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/water_bodies/island_nodes_walk.pmtiles`;
-
 </script>
 
 <VectorTileSource url={point}>
@@ -39,5 +34,4 @@
 </VectorTileSource>
 
 <style>
-  
 </style>

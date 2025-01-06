@@ -8,10 +8,10 @@
   // let url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/pmtiles/`;
   // let url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/pmtiles/just_first_secondary.pmtiles`;
   function modes() {
-    return ["walk", "pt"]
+    return ["walk", "pt"];
   }
   function scaling_methods() {
-    return ["percentage_of_max", "scaled_by_population"]
+    return ["percentage_of_max", "scaled_by_population"];
   }
   function number_selection() {
     return ["just_first", "first_five", "first_20", "all"];
@@ -30,11 +30,11 @@
   let subpurpose = "primary";
 
   let number_to_url_val = {
-    "just_first": 1,
-    "first_five": 5,
-    "first_20": 20,
-    "all": -1,
-  }
+    just_first: 1,
+    first_five: 5,
+    first_20: 20,
+    all: -1,
+  };
 
   $: url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/${mode}/pmtiles/${mode}/${scaling_method}_${number_to_url_val[number_selected]}_${diminshing_returns_scaling}_${subpurpose}.pmtiles`;
 
@@ -45,7 +45,7 @@
   }
 </script>
 
-<RasterTileSource url={url}>
+<RasterTileSource {url}>
   <RasterLayer
     type="raster"
     paint={{
@@ -62,32 +62,32 @@
       <option value={x}>{x}</option>
     {/each}
   </select>
-  <br/>
-  <br/>
+  <br />
+  <br />
   Subpurpose/Purpose:
   <select class="govuk-select" bind:value={subpurpose}>
     {#each subpurposes() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
-  <br/>
-  <br/>
+  <br />
+  <br />
   Scaling method:
   <select class="govuk-select" bind:value={scaling_method}>
     {#each scaling_methods() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
-  <br/>
-  <br/>
+  <br />
+  <br />
   Destinations to find:
   <select class="govuk-select" bind:value={number_selected}>
     {#each number_selection() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
-  <br/>
-  <br/>
+  <br />
+  <br />
   {#if number_selected !== "just_first"}
     Dimishing scaling:
     <select class="govuk-select" bind:value={diminshing_returns_scaling}>
@@ -95,8 +95,8 @@
         <option value={x}>{x}</option>
       {/each}
     </select>
-    <br/>
-    <br/>
+    <br />
+    <br />
   {/if}
 </div>
 
@@ -114,5 +114,3 @@
     padding-bottom: 10px;
   }
 </style>
-
-
