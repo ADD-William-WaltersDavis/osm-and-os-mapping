@@ -1,8 +1,5 @@
 <script>
-  import {
-    VectorTileSource,
-    CircleLayer,
-  } from "svelte-maplibre";
+  import { VectorTileSource, CircleLayer } from "svelte-maplibre";
 
   let point = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/osm_vs_os/ab_shops.pmtiles`;
 
@@ -17,7 +14,6 @@
   }
 
   window.addEventListener("mousemove", handleMouseMove);
-
 </script>
 
 <VectorTileSource url={point}>

@@ -1,5 +1,5 @@
 <script>
-  export let purpose = "Health";
+  export let purpose = "EducationTests";
 
   function purposes() {
     return [
@@ -12,10 +12,11 @@
       "Water",
       "Islands",
       "Streets",
+      "Yearly",
+      "EducationTests",
     ];
   }
 </script>
-
 
 <div class="govuk-form-group" style="display: flex; margin-bottom: 20px">
   <div

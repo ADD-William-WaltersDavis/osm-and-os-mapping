@@ -1,14 +1,9 @@
 <script>
-  import {
-    VectorTileSource,
-    FillLayer,
-    LineLayer,
-  } from "svelte-maplibre";
+  import { VectorTileSource, FillLayer, LineLayer } from "svelte-maplibre";
 
   export let TILE_BUCKET;
 
   let polygon = `pmtiles://${TILE_BUCKET}/water_polygon.pmtiles`;
-  
 </script>
 
 <VectorTileSource url={polygon}>
@@ -30,7 +25,5 @@
   />
 </VectorTileSource>
 
-
 <style>
-  
 </style>
