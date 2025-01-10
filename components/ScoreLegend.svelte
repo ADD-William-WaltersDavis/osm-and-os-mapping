@@ -6,9 +6,9 @@
     if (number == 0) {
       return -2;
     } else if (number != 100) {
-      return 78;
+      return 98;
     } else {
-      return 71;
+      return 90;
     }
   }
   let nipy_spectral_100 = Object.values(colour_mapping);

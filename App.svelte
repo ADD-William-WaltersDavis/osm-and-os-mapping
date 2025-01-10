@@ -52,7 +52,6 @@
     <YearlyOsm />
   {:else if purpose === "EducationTests"}
     <V2EducationTests />
-    <!-- <EducationLayer {TILE_BUCKET} /> -->
   {:else}
     <HealthLayer {TILE_BUCKET} />
     <EducationLayer {TILE_BUCKET} />

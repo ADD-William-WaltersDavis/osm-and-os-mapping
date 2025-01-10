@@ -4,6 +4,7 @@
     RasterLayer,
     hoverStateFilter,
   } from "svelte-maplibre";
+  import ScoreLegend from "./ScoreLegend.svelte";
 
   // let url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/pmtiles/`;
   // let url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/pmtiles/just_first_secondary.pmtiles`;
@@ -17,7 +18,7 @@
     return ["just_first", "first_five", "first_20", "all"];
   }
   function diminshing_returns_scalings() {
-    return [1, 1.3, 2, "log"];
+    return ["None", "1/1.3^n (moderate)", "1/2^n (aggressive)", "Log"];
   }
   function subpurposes() {
     return ["primary", "secondary", "send", "private", "education"];
@@ -26,7 +27,7 @@
   let mode = "pt";
   let scaling_method = "percentage_of_max";
   let number_selected = "just_first";
-  let diminshing_returns_scaling = 1;
+  let diminshing_returns_scaling = "None";
   let subpurpose = "education";
 
   let number_to_url_val = {
@@ -35,12 +36,18 @@
     first_20: 20,
     all: -1,
   };
+  let diminshing_to_url_val = {
+    None: 1,
+    "1/1.3^n (moderate)": 1.3,
+    "1/2^n (aggressive)": 2,
+    Log: "log",
+  };
 
-  $: url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/${mode}/pmtiles/${mode}/${scaling_method}_${number_to_url_val[number_selected]}_${diminshing_returns_scaling}_${subpurpose}.pmtiles`;
+  $: url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/${mode}/pmtiles/${mode}/${scaling_method}_${number_to_url_val[number_selected]}_${diminshing_to_url_val[diminshing_returns_scaling]}_${subpurpose}.pmtiles`;
 
   $: {
     if (number_selected === "just_first") {
-      diminshing_returns_scaling = 1;
+      diminshing_returns_scaling = "None";
     }
   }
 </script>
@@ -56,12 +63,21 @@
 </RasterTileSource>
 
 <div class="whitebox">
+  <ScoreLegend />
+  <br />
   Mode:
   <select class="govuk-select" bind:value={mode}>
     {#each modes() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
+  <button class="tooltip"
+    >?
+    <span class="tooltiptext"
+      >Mode is either set to pt (public transport) or walk, will potentially add
+      cycling/car in the future if needed</span
+    >
+  </button>
   <br />
   <br />
   Subpurpose/Purpose:
@@ -70,31 +86,83 @@
       <option value={x}>{x}</option>
     {/each}
   </select>
+  <button class="tooltip"
+    >?
+    <span class="tooltiptext"
+      >The subpurposes have a weighted average applied to them to calculate
+      overall education. The weightings are done by the number of pupils in each
+      of the school subpurposes. Roughly 50% primary, 40% secondary, 6% private
+      and 4% SEND
+    </span>
+  </button>
   <br />
   <br />
-  Scaling method:
+  National score scaling method:
   <select class="govuk-select" bind:value={scaling_method}>
     {#each scaling_methods() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
+  <button class="tooltip"
+    >?
+    <span class="tooltiptext"
+      >The national score scaling method is how the calculated scores are
+      converted into final scores for each square.
+      <br />
+      <b>Percentage of max</b> is simply each square score divided by the
+      maximum score and rounded to the nearest integer.
+      <br />
+      <b>Scaled by population</b> is done by ordering all residences scores and having
+      the top 1% having a score of 100, then the next 1% having a score of 99 and
+      so on. Then we use these bounds to apply to all the squares whether they have
+      residences in or not.
+    </span>
+  </button>
   <br />
   <br />
-  Destinations to find:
+  Destinations counted:
   <select class="govuk-select" bind:value={number_selected}>
     {#each number_selection() as x}
       <option value={x}>{x}</option>
     {/each}
   </select>
+  <button class="tooltip"
+    >?
+    <span class="tooltiptext"
+      >For destination counted we either only accept the first, first five,
+      first 20 or we accept them all.
+    </span>
+  </button>
   <br />
   <br />
   {#if number_selected !== "just_first"}
-    Dimishing scaling 1/x^n:
+    Dimishing returns function:
     <select class="govuk-select" bind:value={diminshing_returns_scaling}>
       {#each diminshing_returns_scalings() as x}
         <option value={x}>{x}</option>
       {/each}
     </select>
+    <button class="tooltip"
+      >?
+      <span class="tooltiptext"
+        >The diminshing function is the value added for each time you reach a
+        destination after the first time.
+        <br />
+        <b>None</b> is no diminshing returns so each destination has no
+        multiplier applied to it.
+        <br />
+        <b>1/1.3^n</b> is a moderate diminshing returns function where each
+        destination is worth 1/(1.3^n) where n is the number of times you have
+        visited that destination.
+        <br />
+        <b>1/2^n</b> is an aggressive diminshing returns function where each
+        destination is worth 1/(2^n) where n is the number of times you have
+        visited that destination.
+        <br />
+        <b>Log</b> is the current method we use where we add each value on and then
+        take log(total_score) of it at the end.
+      </span>
+    </button>
     <br />
     <br />
   {/if}
@@ -109,8 +177,28 @@
     padding: 10px 15px 0 15px;
     border-radius: 10px;
     box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.2);
-    width: 350px;
+    width: 450px;
     font-size: large;
     padding-bottom: 10px;
+  }
+  .tooltip {
+    position: relative;
+  }
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 320px;
+    background-color: #555;
+    color: #fff;
+    text-align: left;
+    padding: 6px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
   }
 </style>

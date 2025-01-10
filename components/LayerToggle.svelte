@@ -23,7 +23,7 @@
     class="govuk-label"
     style="padding: 5px 10px 0px 0px; font-size: 0.9rem;"
   >
-    Purpose:
+    Testing mode:
   </div>
   <select class="govuk-select" bind:value={purpose}>
     {#each purposes() as x}
