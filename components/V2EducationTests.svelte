@@ -2,6 +2,8 @@
   import {
     RasterTileSource,
     RasterLayer,
+    VectorTileSource,
+    CircleLayer,
     hoverStateFilter,
   } from "svelte-maplibre";
   import ScoreLegend from "./ScoreLegend.svelte";
@@ -18,7 +20,7 @@
     return ["just_first", "first_five", "first_20", "all"];
   }
   function diminshing_returns_scalings() {
-    return ["None", "1/1.3^n (moderate)", "1/2^n (aggressive)", "Log"];
+    return ["None", "Log", "1/1.3^n (moderate)", "1/2^n (aggressive)"];
   }
   function subpurposes() {
     return ["primary", "secondary", "send", "private", "education"];
@@ -26,9 +28,21 @@
 
   let mode = "pt";
   let scaling_method = "percentage_of_max";
-  let number_selected = "just_first";
-  let diminshing_returns_scaling = "None";
+  let number_selected = "all";
+  let diminshing_returns_scaling = "Log";
   let subpurpose = "education";
+  let toggle_schools = false;
+  let hovered = null;
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  function handleMouseMove(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+  }
+
+  window.addEventListener("mousemove", handleMouseMove);
 
   let number_to_url_val = {
     just_first: 1,
@@ -44,13 +58,66 @@
   };
 
   $: url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/${mode}/pmtiles/${mode}/${scaling_method}_${number_to_url_val[number_selected]}_${diminshing_to_url_val[diminshing_returns_scaling]}_${subpurpose}.pmtiles`;
+  let schools_points_url = `pmtiles://https://storage.googleapis.com/very-nice-tiles-bucket/v2_tests/school_points.pmtiles`;
 
   $: {
     if (number_selected === "just_first") {
       diminshing_returns_scaling = "None";
     }
   }
+  $: {
+    if (mode === "walk" && diminshing_returns_scaling === "Log") {
+      // write error message to user
+      alert(
+        "I haven't calculated the log scores for walking yet. \nPlease select a different diminshing returns function"
+      );
+      diminshing_returns_scaling = "None";
+    }
+  }
+  const schoolColorMapping = [
+    "match",
+    ["get", "school"],
+    "primary",
+    "white",
+    "secondary",
+    "green",
+    "send",
+    "cyan",
+    "private",
+    "red",
+    /* default */ "gray",
+  ];
 </script>
+
+{#if toggle_schools}
+  <VectorTileSource url={schools_points_url}>
+    <CircleLayer
+      sourceLayer={"schools"}
+      type="circle"
+      paint={{
+        "circle-radius": 5,
+        "circle-color": schoolColorMapping,
+        // "circle-opacity": 0.6,
+        "circle-stroke-width": 3,
+        "circle-stroke-color": "black",
+      }}
+      filter={[
+        "any",
+        [
+          "all",
+          ["==", ["literal", subpurpose], "education"],
+          [
+            "in",
+            ["get", "school"],
+            ["literal", ["primary", "secondary", "send", "private"]],
+          ],
+        ],
+        ["==", ["get", "school"], subpurpose],
+      ]}
+      bind:hovered
+    />
+  </VectorTileSource>
+{/if}
 
 <RasterTileSource {url}>
   <RasterLayer
@@ -166,6 +233,22 @@
     <br />
     <br />
   {/if}
+  <button
+    class="govuk-button"
+    on:click={() => {
+      toggle_schools = !toggle_schools;
+    }}
+  >
+    Toggle school locations
+  </button>
+</div>
+
+<div
+  class="hoverbox"
+  style="top: {mouseY}px; left: {mouseX}px; font-size: large;"
+  hidden={!hovered}
+>
+  {hovered?.properties?.school}
 </div>
 
 <style>
@@ -200,5 +283,13 @@
   .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+  }
+  .hoverbox {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+    pointer-events: none;
+    opacity: 0.85;
   }
 </style>
