@@ -17,17 +17,17 @@
     return ["just_first", "first_five", "first_20", "all"];
   }
   function diminshing_returns_scalings() {
-    return [1, 1.3, 2];
+    return [1, 1.3, 2, "log"];
   }
   function subpurposes() {
     return ["primary", "secondary", "send", "private", "education"];
   }
 
-  let mode = "walk";
+  let mode = "pt";
   let scaling_method = "percentage_of_max";
   let number_selected = "just_first";
   let diminshing_returns_scaling = 1;
-  let subpurpose = "primary";
+  let subpurpose = "education";
 
   let number_to_url_val = {
     just_first: 1,
@@ -89,7 +89,7 @@
   <br />
   <br />
   {#if number_selected !== "just_first"}
-    Dimishing scaling:
+    Dimishing scaling 1/x^n:
     <select class="govuk-select" bind:value={diminshing_returns_scaling}>
       {#each diminshing_returns_scalings() as x}
         <option value={x}>{x}</option>
